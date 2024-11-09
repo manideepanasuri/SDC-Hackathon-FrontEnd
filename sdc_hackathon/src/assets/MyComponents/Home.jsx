@@ -1,12 +1,15 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Home.css";
 import UserContext from "../context/usercontext/Usercontext";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "./Navbar";
-import { GoogleMap, useJsApiLoader,StandaloneSearchBox } from '@react-google-maps/api'
+import { GoogleMap, useJsApiLoader,StandaloneSearchBox, Marker,DirectionsRenderer,Autocomplete } from '@react-google-maps/api'
 import { useRef } from 'react'
 import { useBeforeUnload } from 'react-router-dom'
 import GoogleMapsEmbed from "./GoogleMapsEmbed";
+
+
+const center = { lat: 17.98361, lng: 79.5299 };
 
 export const Home = () => {
   let navigate = useNavigate();
@@ -17,10 +20,13 @@ export const Home = () => {
     }
   }, [auth]);
 
+  /**@type React.MutableRefObject<HTMLInputElement> */
   const inputref1=useRef(null);
+  /**@type React.MutableRefObject<HTMLInputElement> */
   const inputref2=useRef(null);
+  const [map,setMap]=useState(/** @type google.maps.Map*/null);
 
-  const { isLoaded } = useJsApiLoader({
+  const { isLoaded,loadError } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_API_KEY,
     libraries:["places"]
@@ -38,7 +44,44 @@ export const Home = () => {
     console.log(addresses);
   }
 
+  const [directionsResponse, setDirectionsResponse] = useState(null);
+  const [distance, setDistance] = useState("");
+  const [duration, setDuration] = useState("");
+  if (loadError) {
+    return <div>not loaded{loadError}</div>;
+  }
+  if (!isLoaded) {
+    return <span className="loading loading-ring loading-lg"></span>;
+  }
   
+
+  async function calculateRoute() {
+    if (
+      inputref1.current.value == '' ||
+      inputref2.current.value == ''
+    ) {
+      return;
+    }
+    console.log(inputref1.current.value);
+    //eslint-disable-next-line no-undef
+    const directionService = new google.maps.DirectionsService();
+    const results = await directionService.route({
+      origin: inputref1.current.value,
+      destination: inputref2.current.value,
+      // eslint-disable-next-line no-undef
+      travelMode: google.maps.TravelMode.DRIVING,
+    });
+    setDirectionsResponse(results);
+    setDistance(results.routers[0].legs[0].distance.text);
+    setDuration(results.routers[0].legs[0].duration.text);
+  }
+
+  function clearRoute() {
+    setDirectionsResponse(null);
+    setDistance("");
+    inputref1.current.value = "";
+    inputref2.current.value = "";
+  }
 
   return (
     <>
@@ -82,13 +125,9 @@ export const Home = () => {
                 <path d="M10.406 26.969l10.406-21.938-20.813 11.125h10.406v10.813z" />{" "}
               </g>
             </svg>
-            {location&&
-            <StandaloneSearchBox
-          onLoad={(ref)=>inputref1.current=ref}
-          onPlacesChanged={handleOnPlacesChanged1}
-        >
-            <input type="text" className="grow" placeholder="From" />
-            </StandaloneSearchBox>}
+            <Autocomplete>
+            <input type="text" className="grow" placeholder="From" ref={inputref1}/>
+            </Autocomplete>
           </label>
 
           <label>
@@ -175,18 +214,40 @@ export const Home = () => {
                 />{" "}
               </g>
             </svg>
-            {location&&
-            <StandaloneSearchBox
-          onLoad={(ref)=>inputref2.current=ref}
-          onPlacesChanged={handleOnPlacesChanged2}
-        >
-            <input type="text" className="grow" placeholder="To" />
-            </StandaloneSearchBox>}
+            <Autocomplete>
+            <input type="text" className="grow" placeholder="To" ref={inputref2}/>
+            </Autocomplete>
           </label>
           <label className="btn">See Fares</label>
         </div>
       </div>
-      <GoogleMapsEmbed inputref1={inputref1} inputref2={inputref2}/>
+      {/* <GoogleMapsEmbed inputref1={inputref1} inputref2={inputref2}/> */}
+      <>
+      <div className="flex justify-evenly items-center p-4">
+        <button className="btn btn-primary btn-wide" onClick={calculateRoute}>Calculate Route</button>
+        <button className="btn btn-primary btn-wide" onClick={clearRoute}>Clear Route</button>
+        <button className="btn btn-primary btn-wide" onClick={()=>map.panTo(center)}>center</button>
+      </div>
+      <div className="h-[100vh] w-[100vw] bg-primary z-[modal]">
+        {isLoaded && (
+          <GoogleMap
+            center={center}
+            zoom={15}
+            mapContainerStyle={{ width: "100%", height: "100%" }}
+            options={{
+              zoomControl: false,
+              streetViewControl: false,
+              mapTypeControl: false,
+              fullscreenControl: false,
+            }}
+            onLoad={(map)=>setMap(map)}
+          >
+            <Marker position={center} />
+            {directionsResponse&& <DirectionsRenderer directions={directionsResponse}/>}
+          </GoogleMap>
+        )}
+      </div>
+      </>
     </>
   );
 };
