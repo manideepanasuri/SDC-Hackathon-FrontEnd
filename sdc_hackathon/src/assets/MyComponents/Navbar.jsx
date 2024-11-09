@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import UserContext from '../context/usercontext/Usercontext'
 
 export const Navbar = () => {
+  const {user,logout}=useContext(UserContext);
   return (
     <div className="navbar bg-base-100">
     <div className="flex-1">
@@ -42,7 +44,7 @@ export const Navbar = () => {
           <div className="w-10 rounded-full">
             <img
               alt="Tailwind CSS Navbar component"
-              src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+              src={user?user.photo:""} />
           </div>
         </div>
         <ul
@@ -54,8 +56,7 @@ export const Navbar = () => {
               <span className="badge">New</span>
             </a>
           </li>
-          <li><a>Settings</a></li>
-          <li><a>Logout</a></li>
+          <li ><a className='justify-between' onClick={()=>{logout()}}>Logout</a></li>
         </ul>
       </div>
     </div>

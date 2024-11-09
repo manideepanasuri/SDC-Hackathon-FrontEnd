@@ -1,6 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import './Login.css'
 import UserContext from '../context/usercontext/Usercontext'
+import { Link, useNavigate } from "react-router-dom";
+
 
 export const Login = () => {
 
@@ -8,6 +10,13 @@ export const Login = () => {
   function handleClick(e) {
     Register();
   }
+  let navigate=useNavigate();
+  useEffect(()=>{
+    if(auth){navigate("/")}
+  },[auth])
+
+  
+
   return (
     <div className='h-screen flex' >
         <div className='h-screen flex justify-center items-center w-3/5 bg-primary font-sans text-primary-content'>

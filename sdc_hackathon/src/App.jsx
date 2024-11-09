@@ -2,27 +2,39 @@
 import { useContext, useEffect } from 'react'
 import './App.css'
 import { Login } from './assets/MyComponents/Login'
-<<<<<<< Updated upstream
+
 import UserContext from './assets/context/usercontext/Usercontext'
-=======
-import { Home } from './assets/MyComponents/Home'
-import { Navbar } from './assets/MyComponents/Navbar'
->>>>>>> Stashed changes
+import {
+  createHashRouter,
+  RouterProvider,
+} from "react-router-dom";
+import { Home } from './assets/MyComponents/Home';
+import Book from './Pages/Book';
+
+const router = createHashRouter([
+  {
+    path: "/",
+    element: <Home/>
+  },  
+  {
+    path:"/Register",
+    element:<Login/>
+  },
+  {
+    path:"/Book",
+    element:<Book/>
+  }
+]);
+
 
 function App() {
+
   const {Getdatalocal}=useContext(UserContext);
   useEffect(()=>{
     Getdatalocal();
   },[]);
   return (
-<<<<<<< Updated upstream
-      <Login/>
-=======
-    <>
-      <Navbar/>
-      <Home/>
-    </>
->>>>>>> Stashed changes
+    <RouterProvider router={router} />
   )
 }
 
