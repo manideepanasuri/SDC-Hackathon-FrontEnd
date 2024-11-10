@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {Navbar} from './Navbar'
 import uberImage from './uber.png'
 import olaImage from './ola.png'
@@ -16,6 +16,8 @@ export const Booking = (props) => {
         z = ((Math.random() * 5) + 5);
     }
     let min = Math.min(x, y, z);
+    const [book,setBook]=useState(false);
+    
 
   return (
     <div className='m-2'>
@@ -32,20 +34,32 @@ export const Booking = (props) => {
         </h2>
         <p className='text-lg'>Price: {(x*props.kms).toFixed(2)}Rs</p>
         <div className="card-actions justify-end">
-        <button className="btn btn-primary"  onClick={()=>document.getElementById('my_modal_1').showModal()}>Book Now</button>
+        <button className="btn btn-primary"  onClick={()=>{
+            document.getElementById('my_modal_1').showModal();
+            setTimeout(() => {
+                setBook(true);
+            }, 2000);
+
+        }}>Book Now</button>
         </div>
         <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
+            {
+            book?
+            <div>
             <h3 className="font-bold text-lg">Booked Successfully!!</h3>
             <p className="py-4 text-lg">Price: {(x*props.kms).toFixed(2)}Rs</p>
             <div className="modal-action">
             <div className='flex justify-between items-center w-full'>
             <form method="dialog">
                 {/* if there is a button in form, it will close the modal */}
-                <button className="btn btn-outline btn-error">Close</button>  
+                <button className="btn btn-outline btn-error" >Close</button>  
             </form>
             </div>  
             </div>
+            </div>
+            :<div className="skeleton h-32 w-full"></div>
+            }
         </div>
         </dialog>
     </div>

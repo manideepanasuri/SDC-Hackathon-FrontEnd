@@ -12,6 +12,8 @@ import { Home } from './assets/MyComponents/Home';
 import Book from './Pages/Book';
 import Payments from './assets/MyComponents/Payments';
 import ProfilePage from './assets/MyComponents/ProfilePage';
+import Review from './assets/MyComponents/Review';
+import Accordion from './assets/MyComponents/Accordian';
 
 const router = createHashRouter([
   {
@@ -25,6 +27,14 @@ const router = createHashRouter([
   {
     path:"/Profile",
     element:<ProfilePage/>
+  },
+  {
+    path:"/Reviews",
+    element:<Review/>
+  },
+  {
+    path:"/FAQ",
+    element:<Accordion/>
   }
 ]);
 

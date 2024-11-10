@@ -34,7 +34,14 @@ export const Navbar = () => {
               <span className="badge">New</span>
             </a>
           </li>
-          <li ><a className='justify-between' onClick={()=>{logout()}}>Logout</a></li>
+          <li ><a className='justify-between' onClick={()=>{
+            logout();
+            navigate('/');
+          }}>Logout</a></li>
+          <li ><a className='justify-between' onClick={()=>{navigate('/Reviews')}}>reviews</a></li>
+          <li ><a className='justify-between' onClick={()=>{navigate('/FAQ')}}>FAQ'S</a></li>
+
+
         </ul>
       </div>
     </div>

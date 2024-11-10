@@ -104,6 +104,8 @@ export const Home = () => {
   function clearRoute() {
     setDirectionsResponse(null);
     setDistance("");
+    setDuration("");
+    setShowBook(false);
     inputref1.current.value = "";
     inputref2.current.value = "";
   }
