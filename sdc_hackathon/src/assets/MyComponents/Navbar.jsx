@@ -38,7 +38,7 @@ export const Navbar = () => {
             logout();
             navigate('/');
           }}>Logout</a></li>
-          <li ><a className='justify-between' onClick={()=>{navigate('/Reviews')}}>reviews</a></li>
+          <li ><a className='justify-between' onClick={()=>{navigate('/Reviews')}}>Reviews</a></li>
           <li ><a className='justify-between' onClick={()=>{navigate('/FAQ')}}>FAQ'S</a></li>
 
 

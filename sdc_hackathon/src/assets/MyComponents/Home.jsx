@@ -281,7 +281,7 @@ export const Home = () => {
               className="btn btn-neutral btn-wide m-2"
               onClick={() => map.panTo(center)}
             >
-              center
+              Center
             </button>
           </div>
           <div className="md:flex justify-center">
