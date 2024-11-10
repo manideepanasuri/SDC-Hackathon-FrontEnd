@@ -3,11 +3,17 @@ import "./Home.css";
 import UserContext from "../context/usercontext/Usercontext";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "./Navbar";
-import { GoogleMap, useJsApiLoader,StandaloneSearchBox, Marker,DirectionsRenderer,Autocomplete } from '@react-google-maps/api'
-import { useRef } from 'react'
-import { useBeforeUnload } from 'react-router-dom'
+import {
+  GoogleMap,
+  useJsApiLoader,
+  StandaloneSearchBox,
+  Marker,
+  DirectionsRenderer,
+  Autocomplete,
+} from "@react-google-maps/api";
+import { useRef } from "react";
+import { useBeforeUnload } from "react-router-dom";
 import GoogleMapsEmbed from "./GoogleMapsEmbed";
-
 
 const center = { lat: 17.98361, lng: 79.5299 };
 
@@ -21,28 +27,19 @@ export const Home = () => {
   }, [auth]);
 
   /**@type React.MutableRefObject<HTMLInputElement> */
-  const inputref1=useRef(null);
+  const inputref1 = useRef(null);
   /**@type React.MutableRefObject<HTMLInputElement> */
-  const inputref2=useRef(null);
-  const [map,setMap]=useState(/** @type google.maps.Map*/null);
+  const inputref2 = useRef(null);
+  const [map, setMap] = useState(/** @type google.maps.Map*/ null);
 
-  const { isLoaded,loadError } = useJsApiLoader({
-    id: 'google-map-script',
+  const { isLoaded, loadError } = useJsApiLoader({
+    id: "google-map-script",
     googleMapsApiKey: import.meta.env.VITE_API_KEY,
-    libraries:["places"]
-  })
-  useEffect(()=>{
+    libraries: ["places"],
+  });
+  useEffect(() => {
     console.log(isLoaded);
-  },[isLoaded])
-
-  function handleOnPlacesChanged1() {
-    let addresses=inputref1.current.getPlaces();
-    console.log(addresses);
-  }
-  function handleOnPlacesChanged2() {
-    let addresses=inputref2.current.getPlaces();
-    console.log(addresses);
-  }
+  }, [isLoaded]);
 
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
@@ -53,13 +50,9 @@ export const Home = () => {
   if (!isLoaded) {
     return <span className="loading loading-ring loading-lg"></span>;
   }
-  
 
   async function calculateRoute() {
-    if (
-      inputref1.current.value == '' ||
-      inputref2.current.value == ''
-    ) {
+    if (inputref1.current.value == "" || inputref2.current.value == "") {
       return;
     }
     console.log(inputref1.current.value);
@@ -72,8 +65,24 @@ export const Home = () => {
       travelMode: google.maps.TravelMode.DRIVING,
     });
     setDirectionsResponse(results);
-    setDistance(results.routers[0].legs[0].distance.text);
-    setDuration(results.routers[0].legs[0].duration.text);
+    //console.log(results.routers[0].legs[0].distance.text)
+    if (
+      results.routes &&
+      results.routes[0] &&
+      results.routes[0].legs &&
+      results.routes[0].legs[0]
+    ) {
+      const distanceText = results.routes[0].legs[0].distance.text;
+      const durationText = results.routes[0].legs[0].duration.text;
+
+      console.log("Distance:", distanceText); // Log distance to confirm
+      console.log("Duration:", durationText); // Log duration to confirm
+
+      setDistance(distanceText);
+      setDuration(durationText);
+    } else {
+      console.error("No valid route information found.");
+    }
   }
 
   function clearRoute() {
@@ -97,7 +106,7 @@ export const Home = () => {
 
         <div className="relative text-neutral-content font-sans w-2/5 font-medium ">
           <span className="text-center" id="exp">
-            Experience the smarter way to get ride 
+            Experience the smarter way to get ride
           </span>
         </div>
         <div className="relative flex gap-2 justify-center bg-cover bg-center w-3/5 ">
@@ -126,7 +135,12 @@ export const Home = () => {
               </g>
             </svg>
             <Autocomplete>
-            <input type="text" className="grow" placeholder="From" ref={inputref1}/>
+              <input
+                type="text"
+                className="grow"
+                placeholder="From"
+                ref={inputref1}
+              />
             </Autocomplete>
           </label>
 
@@ -215,7 +229,12 @@ export const Home = () => {
               </g>
             </svg>
             <Autocomplete>
-            <input type="text" className="grow" placeholder="To" ref={inputref2}/>
+              <input
+                type="text"
+                className="grow"
+                placeholder="To"
+                ref={inputref2}
+              />
             </Autocomplete>
           </label>
           <label className="btn">See Fares</label>
@@ -223,30 +242,51 @@ export const Home = () => {
       </div>
       {/* <GoogleMapsEmbed inputref1={inputref1} inputref2={inputref2}/> */}
       <>
-      <div className="flex justify-evenly items-center p-4">
-        <button className="btn btn-primary btn-wide" onClick={calculateRoute}>Calculate Route</button>
-        <button className="btn btn-primary btn-wide" onClick={clearRoute}>Clear Route</button>
-        <button className="btn btn-primary btn-wide" onClick={()=>map.panTo(center)}>center</button>
-      </div>
-      <div className="h-[100vh] w-[100vw] bg-primary z-[modal]">
-        {isLoaded && (
-          <GoogleMap
-            center={center}
-            zoom={15}
-            mapContainerStyle={{ width: "100%", height: "100%" }}
-            options={{
-              zoomControl: false,
-              streetViewControl: false,
-              mapTypeControl: false,
-              fullscreenControl: false,
-            }}
-            onLoad={(map)=>setMap(map)}
+        <div className="flex justify-between items-center p-4 m-b-0 pb-0">
+          <div className="gap-1">
+          <button className="btn btn-neutral btn-wide mr-2" onClick={calculateRoute}>
+            Calculate Route
+          </button>
+          <button className="btn btn-neutral btn-wide mr-2" onClick={clearRoute}>
+            Clear Route
+          </button>
+          <button
+            className="btn btn-neutral btn-wide mr-2"
+            onClick={() => map.panTo(center)}
           >
-            <Marker position={center} />
-            {directionsResponse&& <DirectionsRenderer directions={directionsResponse}/>}
-          </GoogleMap>
-        )}
-      </div>
+            center
+          </button>
+          </div>
+          <div className="flex justify-center">
+          <p className="text-xl text-bold ml-3">
+            Distance: {distance?distance:0}
+          </p>
+          <p className="text-xl text-bold ml-3">
+            Duration: {duration?duration:0}
+          </p>
+          </div>
+        </div>
+        <div className="h-[80vh] w-[100%]  z-[modal] p-4 rounded">
+          {isLoaded && (
+            <GoogleMap
+              center={center}
+              zoom={15}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+              options={{
+                zoomControl: false,
+                streetViewControl: false,
+                mapTypeControl: false,
+                fullscreenControl: false,
+              }}
+              onLoad={(map) => setMap(map)}
+            >
+              
+              {directionsResponse && (
+                <DirectionsRenderer directions={directionsResponse} />
+              )}
+            </GoogleMap>
+          )}
+        </div>
       </>
     </>
   );
