@@ -36,7 +36,7 @@ export const Booking = (props) => {
         </div>
         <dialog id="my_modal_1" className="modal">
         <div className="modal-box">
-            <h3 className="font-bold text-lg">Please Confirm!!</h3>
+            <h3 className="font-bold text-lg">Booked Successfully!!</h3>
             <p className="py-4 text-lg">Price: {(x*props.kms).toFixed(2)}Rs</p>
             <div className="modal-action">
             <div className='flex justify-between items-center w-full'>
@@ -44,7 +44,6 @@ export const Booking = (props) => {
                 {/* if there is a button in form, it will close the modal */}
                 <button className="btn btn-outline btn-error">Close</button>  
             </form>
-            <button className='btn btn-info'>Proceed to Checkout</button>
             </div>  
             </div>
         </div>
@@ -68,7 +67,7 @@ export const Booking = (props) => {
         </div>
         <dialog id="my_modal_2" className="modal">
         <div className="modal-box">
-            <h3 className="font-bold text-lg">Please Confirm!!</h3>
+            <h3 className="font-bold text-lg">Booked Successfully!!</h3>
             <p className="py-4 text-lg">Price: {(y*props.kms).toFixed(2)}Rs</p>
             <div className="modal-action">
             <div className='flex justify-between items-center w-full'>
@@ -76,7 +75,7 @@ export const Booking = (props) => {
                 {/* if there is a button in form, it will close the modal */}
                 <button className="btn btn-outline btn-error">Close</button>  
             </form>
-            <button className='btn btn-info'>Proceed to Checkout</button>
+            
             </div>  
             </div>
         </div>
@@ -100,7 +99,7 @@ export const Booking = (props) => {
         </div>
         <dialog id="my_modal_3" className="modal">
         <div className="modal-box">
-            <h3 className="font-bold text-lg">Please Confirm!!</h3>
+            <h3 className="font-bold text-lg">Booked Successfully!!</h3>
             <p className="py-4 text-lg">Price: {(z*props.kms).toFixed(2)}Rs</p>
             <div className="modal-action">
             <div className='flex justify-between items-center w-full'>
@@ -108,7 +107,7 @@ export const Booking = (props) => {
                 {/* if there is a button in form, it will close the modal */}
                 <button className="btn btn-outline btn-error">Close</button>  
             </form>
-            <button className='btn btn-info'>Proceed to Checkout</button>
+           
             </div>  
             </div>
         </div>

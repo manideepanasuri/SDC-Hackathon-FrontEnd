@@ -1,12 +1,19 @@
 import React, { useContext } from 'react'
 import UserContext from '../context/usercontext/Usercontext'
+import { Link, useNavigate } from "react-router-dom";
+
 
 export const Navbar = () => {
   const {user,logout}=useContext(UserContext);
+  let navigate=useNavigate();
+  
+  
   return (
     <div className="navbar bg-base-100">
     <div className="flex-1">
-      <a className="btn btn-ghost text-xl">CabCompass</a>
+      <a className="btn btn-ghost text-xl" onClick={()=>{
+        navigate('/');
+      }}>CabCompass</a>
     </div>
     <div className="flex-none">
       
@@ -22,7 +29,7 @@ export const Navbar = () => {
           tabIndex={0}
           className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
           <li>
-            <a className="justify-between">
+            <a className="justify-between" onClick={()=>{navigate('/Profile')}}>
               Profile
               <span className="badge">New</span>
             </a>

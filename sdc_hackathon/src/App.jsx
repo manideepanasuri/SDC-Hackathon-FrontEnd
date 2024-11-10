@@ -11,6 +11,7 @@ import {
 import { Home } from './assets/MyComponents/Home';
 import Book from './Pages/Book';
 import Payments from './assets/MyComponents/Payments';
+import ProfilePage from './assets/MyComponents/ProfilePage';
 
 const router = createHashRouter([
   {
@@ -22,8 +23,8 @@ const router = createHashRouter([
     element:<Login/>
   },
   {
-    path:"/Payments",
-    element:<Payments/>
+    path:"/Profile",
+    element:<ProfilePage/>
   }
 ]);
 
