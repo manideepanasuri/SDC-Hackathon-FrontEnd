@@ -21,7 +21,7 @@ export const Booking = (props) => {
 
   return (
     <div className='m-2'>
-    <div className='flex justify-center items-center gap-4 '>
+    <div className=' grid-col-1 md:grid-cols-3 grid justify-center items-center gap-4 '>
     <div className="flex-1 card card-compact bg-base-100 w-96 shadow-xl">
     <figure>
         <img

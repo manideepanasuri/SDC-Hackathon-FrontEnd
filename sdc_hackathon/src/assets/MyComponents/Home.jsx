@@ -4,7 +4,7 @@ import UserContext from "../context/usercontext/Usercontext";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { Booking } from "./Booking";
-import { Footer } from './Footer'
+import { Footer } from "./Footer";
 
 import {
   GoogleMap,
@@ -21,11 +21,12 @@ import GoogleMapsEmbed from "./GoogleMapsEmbed";
 const center = { lat: 17.98361, lng: 79.5299 };
 
 export const Home = () => {
-
-  const [showbook,setShowBook]=useState(false);
+  const [showbook, setShowBook] = useState(false);
 
   async function handleShowFare() {
-    if(inputref1.current.value==''||inputref2.current.value==''){return;}
+    if (inputref1.current.value == "" || inputref2.current.value == "") {
+      return;
+    }
     calculateRoute();
     setShowBook(true);
   }
@@ -37,7 +38,6 @@ export const Home = () => {
       navigate("/Register");
     }
   }, [auth]);
-
 
   /**@type React.MutableRefObject<HTMLInputElement> */
   const inputref1 = useRef(null);
@@ -57,7 +57,7 @@ export const Home = () => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
-  const [distanceinkm,setDistanceinkm]=useState(0);
+  const [distanceinkm, setDistanceinkm] = useState(0);
   if (loadError) {
     return <div>not loaded{loadError}</div>;
   }
@@ -88,11 +88,11 @@ export const Home = () => {
     ) {
       const distanceText = results.routes[0].legs[0].distance.text;
       const durationText = results.routes[0].legs[0].duration.text;
-      let distance1 =results.routes[0].legs[0].distance.value;
+      let distance1 = results.routes[0].legs[0].distance.value;
       console.log("Distance:", distanceText); // Log distance to confirm
       console.log("Duration:", durationText); // Log duration to confirm
-      console.log("distance:",distance1)
-      distance1=distance1/1000;
+      console.log("distance:", distance1);
+      distance1 = distance1 / 1000;
       setDistance(distanceText);
       setDuration(durationText);
       setDistanceinkm(distance1);
@@ -114,7 +114,7 @@ export const Home = () => {
     <>
       <Navbar />
       <div
-        className="relative md:flex items-center justify-center p-3 h-96"
+        className="relative md:flex items-center justify-center p-3 "
         id="section"
       >
         <div
@@ -122,13 +122,13 @@ export const Home = () => {
           id="in123"
         ></div>
 
-        <div className="relative text-neutral-content font-sans w-2/5 font-medium ">
+        <div className="relative text-neutral-content font-sans md:w-2/5 font-medium ">
           <span className="text-center" id="exp">
             Experience the smarter way to get ride
           </span>
         </div>
-        <div className="relative flex gap-2 justify-center bg-cover bg-center w-3/5 ">
-          <label className="input input-bordered flex items-center gap-2 w-2/5">
+        <div className="relative  md:flex gap-2 justify-center bg-cover bg-center md:w-3/5 ">
+          <label className="input input-bordered flex items-center gap-2 md:w-2/5 m-2">
             <svg
               fill="#ffffff"
               width="20px"
@@ -162,8 +162,8 @@ export const Home = () => {
             </Autocomplete>
           </label>
 
-          <label>
-            <button className="btn">
+          <label className="flex justify-center">
+            <button className="btn ">
               <svg
                 width="36px"
                 height="36px"
@@ -214,7 +214,7 @@ export const Home = () => {
             </button>
           </label>
 
-          <label className="input input-bordered flex items-center gap-2 w-2/5">
+          <label className="input input-bordered flex items-center gap-2 md:w-2/5 m-2">
             <svg
               width="20px"
               height="20px"
@@ -255,34 +255,42 @@ export const Home = () => {
               />
             </Autocomplete>
           </label>
-          <label className="btn" onClick={handleShowFare}>See Fares</label>
+          <label className="btn m-2" onClick={handleShowFare}>
+            See Fares
+          </label>
         </div>
       </div>
-      {showbook&&<Booking kms={distanceinkm}/>}
+      {showbook && <Booking kms={distanceinkm} />}
       {/* <GoogleMapsEmbed inputref1={inputref1} inputref2={inputref2}/> */}
       <>
         <div className="flex justify-between items-center p-4 m-b-0 pb-0">
-          <div className="gap-1">
-          <button className="btn btn-neutral btn-wide mr-2" onClick={calculateRoute}>
-            Calculate Route
-          </button>
-          <button className="btn btn-neutral btn-wide mr-2" onClick={clearRoute}>
-            Clear Route
-          </button>
-          <button
-            className="btn btn-neutral btn-wide mr-2"
-            onClick={() => map.panTo(center)}
-          >
-            center
-          </button>
+          <div className="gap-1 m-2">
+            <button
+              className="btn btn-neutral btn-wide m-2"
+              onClick={calculateRoute}
+            >
+              Calculate Route
+            </button>
+            <button
+              className="btn btn-neutral btn-wide m-2"
+              onClick={clearRoute}
+            >
+              Clear Route
+            </button>
+            <button
+              className="btn btn-neutral btn-wide m-2"
+              onClick={() => map.panTo(center)}
+            >
+              center
+            </button>
           </div>
-          <div className="flex justify-center">
-          <p className="text-xl text-bold ml-3">
-            Distance: {distance?distance:0}
-          </p>
-          <p className="text-xl text-bold ml-3">
-            Duration: {duration?duration:0}
-          </p>
+          <div className="md:flex justify-center">
+            <p className="text-xl text-bold ml-3">
+              Distance: {distance ? distance : 0}
+            </p>
+            <p className="text-xl text-bold ml-3">
+              Duration: {duration ? duration : 0}
+            </p>
           </div>
         </div>
         <div className="h-[80vh] w-[100%]  z-[modal] p-4 rounded">
@@ -299,7 +307,6 @@ export const Home = () => {
               }}
               onLoad={(map) => setMap(map)}
             >
-              
               {directionsResponse && (
                 <DirectionsRenderer directions={directionsResponse} />
               )}
