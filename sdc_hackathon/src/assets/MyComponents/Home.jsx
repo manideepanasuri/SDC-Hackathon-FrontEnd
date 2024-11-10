@@ -4,6 +4,7 @@ import UserContext from "../context/usercontext/Usercontext";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "./Navbar";
 import { Booking } from "./Booking";
+import { Footer } from './Footer'
 
 import {
   GoogleMap,
@@ -304,6 +305,7 @@ export const Home = () => {
           )}
         </div>
       </>
+      <Footer />
     </>
   );
 };
