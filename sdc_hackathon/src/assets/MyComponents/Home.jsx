@@ -162,7 +162,7 @@ export const Home = () => {
             </Autocomplete>
           </label>
 
-          <label className="flex justify-center">
+          <label className="md:flex justify-center items-center">
             <button className="btn ">
               <svg
                 width="36px"
