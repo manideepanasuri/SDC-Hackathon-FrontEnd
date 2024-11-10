@@ -8,3 +8,13 @@
     width: 50%;
     height: 100%;
 }
+#inl123 {
+    background-image: url(./taxi.png);
+    overflow: hidden;
+}
+#intitle {
+    font-family: 'Calisto MT';
+}
+#insub {
+    font-family: 'Maiandra GD';
+}
