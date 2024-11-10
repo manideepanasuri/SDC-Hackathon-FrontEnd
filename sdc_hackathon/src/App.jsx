@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 import { Home } from './assets/MyComponents/Home';
 import Book from './Pages/Book';
+import Payments from './assets/MyComponents/Payments';
 
 const router = createHashRouter([
   {
@@ -21,8 +22,8 @@ const router = createHashRouter([
     element:<Login/>
   },
   {
-    path:"/Book",
-    element:<Book/>
+    path:"/Payments",
+    element:<Payments/>
   }
 ]);
 

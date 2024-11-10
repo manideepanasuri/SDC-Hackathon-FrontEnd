@@ -3,6 +3,8 @@ import "./Home.css";
 import UserContext from "../context/usercontext/Usercontext";
 import { Link, useNavigate } from "react-router-dom";
 import { Navbar } from "./Navbar";
+import { Booking } from "./Booking";
+
 import {
   GoogleMap,
   useJsApiLoader,
@@ -18,6 +20,15 @@ import GoogleMapsEmbed from "./GoogleMapsEmbed";
 const center = { lat: 17.98361, lng: 79.5299 };
 
 export const Home = () => {
+
+  const [showbook,setShowBook]=useState(false);
+
+  async function handleShowFare() {
+    if(inputref1.current.value==''||inputref2.current.value==''){return;}
+    calculateRoute();
+    setShowBook(true);
+  }
+
   let navigate = useNavigate();
   const { auth, user } = useContext(UserContext);
   useEffect(() => {
@@ -25,6 +36,7 @@ export const Home = () => {
       navigate("/Register");
     }
   }, [auth]);
+
 
   /**@type React.MutableRefObject<HTMLInputElement> */
   const inputref1 = useRef(null);
@@ -44,6 +56,7 @@ export const Home = () => {
   const [directionsResponse, setDirectionsResponse] = useState(null);
   const [distance, setDistance] = useState("");
   const [duration, setDuration] = useState("");
+  const [distanceinkm,setDistanceinkm]=useState(0);
   if (loadError) {
     return <div>not loaded{loadError}</div>;
   }
@@ -74,12 +87,14 @@ export const Home = () => {
     ) {
       const distanceText = results.routes[0].legs[0].distance.text;
       const durationText = results.routes[0].legs[0].duration.text;
-
+      let distance1 =results.routes[0].legs[0].distance.value;
       console.log("Distance:", distanceText); // Log distance to confirm
       console.log("Duration:", durationText); // Log duration to confirm
-
+      console.log("distance:",distance1)
+      distance1=distance1/1000;
       setDistance(distanceText);
       setDuration(durationText);
+      setDistanceinkm(distance1);
     } else {
       console.error("No valid route information found.");
     }
@@ -237,9 +252,10 @@ export const Home = () => {
               />
             </Autocomplete>
           </label>
-          <label className="btn">See Fares</label>
+          <label className="btn" onClick={handleShowFare}>See Fares</label>
         </div>
       </div>
+      {showbook&&<Booking kms={distanceinkm}/>}
       {/* <GoogleMapsEmbed inputref1={inputref1} inputref2={inputref2}/> */}
       <>
         <div className="flex justify-between items-center p-4 m-b-0 pb-0">
